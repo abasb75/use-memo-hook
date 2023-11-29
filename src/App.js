@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes,Route } from "react-router-dom";
+
+const WithUseMemo =  lazy(()=>import( "./with-use-memo/app"));
+const WithoutUseMemo = lazy(()=>import( "./without-use-memo/app"));
+const IndexPage = lazy(()=>import( "./index-page/app"));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<p>Page is loading ...</p>} >
+      <BrowserRouter >
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/without-use-memo" element={<WithoutUseMemo />} />
+          <Route path="/with-use-memo" element={<WithUseMemo />} />
+        </Routes>
+      </BrowserRouter>
+    </Suspense>
   );
 }
 
